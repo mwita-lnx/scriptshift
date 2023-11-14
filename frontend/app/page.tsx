@@ -3,14 +3,19 @@ import React from 'react';
 import Home from 'app';
 
 
-import { getExploreNearby, getLiveAnywhere } from 'utils/data';
+import { getExploreNearby, categoriesData, tags } from 'utils/data';
 
 
 const Page = async () => {
-  return (
-      
-    <Home exploreNearby={getExploreNearby()} liveAnywhere={getLiveAnywhere()}/>
-  );
-};
+    const categories:[] = await categoriesData()
+    const exploreNearby = await getExploreNearby()
+    const tagsData:[] = await tags()
+    return (
+      <Home exploreNearby={exploreNearby} categories={categories} tags={tagsData}/>
+    );
+  
+};  
+
+    
 
 export default Page;

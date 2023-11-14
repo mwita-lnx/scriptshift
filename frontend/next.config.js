@@ -1,6 +1,7 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    
   },
 };
 
@@ -8,7 +9,15 @@ const nextConfig = {
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['links.papareact.com'],
+    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/media/**',
+      },
+    ],
   },
   
 };

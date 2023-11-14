@@ -5,8 +5,13 @@ export interface IExploreNearby {
   distance: string;
 }
 
-export interface ILiveAnywhere {
+export interface ICategory {
   id: string
-  img: string;
-  title: string;
+  image: string;
+  name: string;
+}
+
+export interface ITag {
+  id: string
+  name: string;
 }

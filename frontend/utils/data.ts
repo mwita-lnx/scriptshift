@@ -1,3 +1,6 @@
+const api_base_url = process.env.API_BASE_URL;
+
+
 
 export const getExploreNearby = () => {
   const data = [
@@ -53,31 +56,81 @@ export const getExploreNearby = () => {
   return data;
 };
 
-export const getLiveAnywhere = () => {
-  const data = [
-    {
-      "id": "2a5c2d86-fb19-43b1-a0f2-2069c0d1a41f",
-      "img": "/assets/live-anywhere/2io.webp",
-      "title": "Outdoor getaways"
-    },
-    {
-      "id": "4c9d6acf-041f-4a4e-8a86-51475ccde4b0",
-      "img": "/assets/live-anywhere/q7j.webp",
-      "title": "Unique stays"
-    },
-    {
-      "id": "e9278833-f963-4af0-9edc-fe372ded10cb",
-      "img": "/assets/live-anywhere/s03.webp",
-      "title": "Entire homes"
-    },
-    {
-      "id": "f588e9ce-32c4-47da-922f-b667265111d2",
-      "img": "/assets/live-anywhere/8ix.webp",
-      "title": "Pet allowed"
+export const categoriesData = async () => {
+  try {
+    const response = await fetch(`${api_base_url}/categories/`,{ cache: 'no-store' });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  ]
-  return data ;
+
+    const data = await response.json();
+    
+    return data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
+  }
 };
+
+
+export const tags = async () => {
+  try {
+    const response = await fetch(`${api_base_url}/tags/`,{ cache: 'no-store' });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    return data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
+  }
+};
+
+
+async function searchBlogPosts(query: string, tags: string[], categories: string[], ordering: string): Promise<any> {
+  // Base API endpoint
+  const apiEndpoint = `${api_base_url}/blogposts/`;
+
+  // Construct the query parameters
+  const params = new URLSearchParams();
+  if (query) params.append('search', query);
+  if (tags.length > 0) params.append('tags__name', tags.join(','));
+  if (categories.length > 0) params.append('categories__name', categories.join(','));
+  if (ordering) params.append('ordering', ordering);
+
+  // Full API URL with query parameters
+  const apiUrl = `${apiEndpoint}?${params.toString()}`;
+
+  try {
+    // Make the API request
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any additional headers if needed
+      },
+    });
+
+    // Check if the request was successful
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
+    // Parse the JSON response
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error during API request:', error);
+    throw error;
+  }
+}
+
+
 
 export const getSearch = async () => {
   const searchResponse = [

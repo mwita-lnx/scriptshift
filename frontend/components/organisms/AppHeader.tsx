@@ -14,17 +14,15 @@ import AppSearchdrop from '../atoms/AppSearchdrop';
 import { GlobeAltIcon, MenuIcon, SearchIcon } from '@heroicons/react/outline';
 import { UserCircleIcon } from '@heroicons/react/solid';
 // typings
-enum EHeaderOpions {PLACES_TO_STAY
-   = 'placesToStay',
-  FIND_EXPERIENCES = 'findExperiences',
+enum EHeaderOpions {
+  HOME = 'home',
+  BLOG = 'blog',
   SEARCH = 'search',
 }
 
-import {  IExploreNearby } from 'typings';
-import { formatGuests, formatRangeDate } from 'utils';
+import { IExploreNearby } from 'typings';
+
 // context
-
-
 
 interface AppHeaderProps {
   exploreNearby?: IExploreNearby[];
@@ -33,8 +31,6 @@ interface AppHeaderProps {
 }
 
 const AppHeader: FC<AppHeaderProps> = ({ exploreNearby, searchPage, query }) => {
-  
-
   // handler
   const handleOnBlur = (event?: FocusEvent<HTMLElement>) => {
     const { relatedTarget } = event || {};
@@ -54,9 +50,7 @@ const AppHeader: FC<AppHeaderProps> = ({ exploreNearby, searchPage, query }) => 
   const [isActiveSearch, setIsActiveSearch] = useState<boolean>(
     searchPage ? false : true
   );
-  const [activeMenu, setActiveMenu] = useState<EHeaderOpions | null>(
-    EHeaderOpions.PLACES_TO_STAY
-  );
+  const [activeMenu, setActiveMenu] = useState<EHeaderOpions | null>(EHeaderOpions.HOME);
 
   const handleOnScroll = () => {
     const position = window.scrollY;
@@ -70,7 +64,7 @@ const AppHeader: FC<AppHeaderProps> = ({ exploreNearby, searchPage, query }) => 
   };
 
   const headerBehavior = () => {
-    let style = [];
+    let style: any[] = [];
     if (!isSnapTop) style.push('bg-white shadow-lg');
     if (!isActiveSearch) style.push('h-[86px] pb-5');
     if (isActiveSearch) style.push('pb-8');
@@ -119,23 +113,7 @@ const AppHeader: FC<AppHeaderProps> = ({ exploreNearby, searchPage, query }) => 
             onClick={() => setIsActiveSearch(true)}
           >
             {searchPage ? (
-              <span className="flex-grow text-sm font-medium tracking-wide text-gray-500">
-                <span className="px-4 py-1 border-r border-gay-200">
-                  {query.location || (
-                    <span className="font-normal text-gray-300">Location</span>
-                  )}
-                </span>
-                <span className="px-4 py-1 border-r border-gay-200">
-                  {formatRangeDate(query.checkIn, query.checkOut) || (
-                    <span className="font-normal text-gray-300">Add dates</span>
-                  )}
-                </span>
-                <span className="px-4 py-1">
-                  {formatGuests(query.guests, { noInfants: true }) || (
-                    <span className="font-normal text-gray-300">Add guests</span>
-                  )}
-                </span>
-              </span>
+              <span className="flex-grow text-sm font-medium tracking-wide text-gray-500"></span>
             ) : (
               <span className="flex-grow text-sm font-medium tracking-wide text-gray-500">
                 Menu
@@ -149,18 +127,18 @@ const AppHeader: FC<AppHeaderProps> = ({ exploreNearby, searchPage, query }) => 
               <AppHeaderOption
                 isSnap={isSnapTop}
                 isActiveHeader={isActiveSearch}
-                active={activeMenu === EHeaderOpions.PLACES_TO_STAY}
-                onClick={() => setActiveMenu(EHeaderOpions.PLACES_TO_STAY)}
+                active={activeMenu === EHeaderOpions.HOME}
+                onClick={() => setActiveMenu(EHeaderOpions.HOME)}
               >
-                Places to stay
+                <Link href="/">Home</Link>
               </AppHeaderOption>
               <AppHeaderOption
                 isSnap={isSnapTop}
                 isActiveHeader={isActiveSearch}
-                active={activeMenu === EHeaderOpions.FIND_EXPERIENCES}
-                onClick={() => setActiveMenu(EHeaderOpions.FIND_EXPERIENCES)}
+                active={activeMenu === EHeaderOpions.BLOG}
+                onClick={() => setActiveMenu(EHeaderOpions.BLOG)}
               >
-                Experiences
+                Blog
               </AppHeaderOption>
               <AppHeaderOption isSnap={isSnapTop} isActiveHeader={isActiveSearch}>
                 <Link href="/">Online Experiences</Link>
@@ -175,11 +153,11 @@ const AppHeader: FC<AppHeaderProps> = ({ exploreNearby, searchPage, query }) => 
               type="inputText"
               title="start.."
               placeholder="Where are you going?"
-              active={activeMenu === EHeaderOpions .SEARCH}
-              onFocus={() => setActiveMenu(EHeaderOpions .SEARCH)}
+              active={activeMenu === EHeaderOpions.SEARCH}
+              onFocus={() => setActiveMenu(EHeaderOpions.SEARCH)}
               onBlur={handleOnBlur}
               isSearch={true}
-              onSearch={() => setActiveMenu(EHeaderOpions.PLACES_TO_STAY)}
+              onSearch={() => setActiveMenu(EHeaderOpions.HOME)}
             >
               <AppSearchOptionWrapper className="right-0 w-96">
                 <AppSearchdrop />

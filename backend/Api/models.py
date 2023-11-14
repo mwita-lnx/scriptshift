@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 from .managers import UserProfileManager
 
 class UserProfile(AbstractUser):
@@ -20,6 +21,7 @@ class UserProfile(AbstractUser):
     
 class Category(models.Model):
     name = models.CharField(max_length=50, db_index=True)
+    image = models.ImageField(upload_to='category_images', blank=True)
 
     def __str__(self):
         return self.name
